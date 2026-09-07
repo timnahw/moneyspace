@@ -9,7 +9,7 @@
   "theme_color": "#FFF8F7",
   "icons": [
     {
-      "src": "./icon.png",
+      "src": "./moneyspace-icon.png",
       "sizes": "1024x1024",
       "type": "image/png",
       "purpose": "any maskable"

@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Moneyspace" />
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="apple-touch-icon" href="./icon.png" />
+    <link rel="apple-touch-icon" href="./moneyspace-icon.png" />
     <title>Moneyspace</title>
     <style>
       :root { --bg:#fffaf5; --surface:#fff; --surface-soft:#f9f0e8; --ink:#332727; --muted:#8e7974; --line:#efe3db; --purple:#7652b8; --purple-deep:#563493; --purple-soft:#eee6fb; --green:#169a67; --red:#d24c57; --orange:#ed9655; --blue:#4f83c9; --shadow:0 12px 34px rgba(87,52,38,.10); }
@@ -119,6 +119,12 @@
       [data-theme="dark"][data-palette] .mark:after{background:color-mix(in srgb,var(--blue) 55%,var(--surface))}
       #themeButton{display:none}.mode-options{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 15px}.mode-options button{padding:10px 5px;border:1px solid var(--line);border-radius:13px;background:var(--surface);color:var(--muted);font-size:12px;font-weight:750;white-space:nowrap}.mode-options button.selected{background:var(--purple-deep);border-color:var(--purple-deep);color:#fff}
       .brand{font-family:"Avenir Next",Avenir,"Helvetica Neue",ui-sans-serif,system-ui,sans-serif;font-weight:650;letter-spacing:-.045em}[data-palette] .mark{width:39px;height:39px;background:var(--purple-deep);border:0;border-radius:13px;box-shadow:none}[data-palette] .mark:before{content:"";position:absolute;left:7px;top:7px;width:18px;height:14px;border:0;border-radius:5px;background:var(--orange);transform:none;box-shadow:none}[data-palette] .mark:after{content:"";position:absolute;left:20px;top:20px;width:12px;height:12px;border:0;border-radius:4px;background:var(--blue);transform:none;box-shadow:none}
+      /* A simple primary action and a navigation edge that finishes at the screen. */
+      .add-floating{align-items:center;border-radius:50%;display:flex;font-size:28px;height:54px;justify-content:center;line-height:1;padding:0;right:max(20px,calc(50% - 220px));bottom:76px;width:54px}
+      .nav{bottom:0;border-bottom:0;border-radius:20px 20px 0 0;width:min(100%,480px)}
+      @media(max-width:520px){.nav{bottom:0;border-radius:20px 20px 0 0;width:100%}.add-floating{bottom:76px;right:18px}}
+      .backup-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.backup-actions label{display:inline-flex;align-items:center;cursor:pointer}
+      button.mini-actions{background:transparent;font-size:11px;font-weight:750;padding:5px 3px}
     </style>
   </head>
   <body>
@@ -134,7 +140,7 @@
         <div class="section-head"><h2>All entries</h2></div><div class="filters"><input id="searchInput" placeholder="Search entries" /><select id="scopeFilter"><option value="month">This month</option><option value="all">All time</option></select><select id="typeFilter"><option value="all">All types</option><option value="income">Income</option><option value="needs">Needs</option><option value="wants">Wants</option></select><select id="categoryFilter"><option value="all">All categories</option></select></div><div class="card table-card" id="activityList"></div></section>
       <section class="view" id="yearView"><div class="section-head"><div><h1 class="page-title">Year in review</h1><p class="subtle">The bigger picture, month by month.</p></div><div class="month-control year-control"><button id="prevYear">‹</button><select id="yearSelect" aria-label="Choose year"></select><button id="nextYear">›</button></div></div><div class="year-summary month-stats"><div class="stat income"><small>Total income</small><strong id="yearIncome">€0</strong></div><div class="stat spend"><small>Total spent</small><strong id="yearSpent">€0</strong></div><div class="stat left"><small>Potential savings</small><strong id="yearSaved">€0</strong></div></div><div class="section-head"><h2>Savings progress</h2><span class="subtle">Against your annual goal</span></div><div class="card year-progress" id="yearSavingsProgress"></div><div class="section-head"><h2>Income &amp; spending</h2><span class="subtle">Month by month</span></div><div class="card year-bars" id="yearBars"></div><div class="year-legend"><span><i class="income"></i>Income</span><span><i class="spent"></i>Spent</span></div><div class="section-head"><h2>Spending by category</h2><span class="year-category-note" id="yearCategoryNote"></span></div><div class="card category-chart" id="yearCategoryChart"></div><div class="section-head"><h2>Year highlights</h2></div><div class="year-insights" id="yearInsights"></div></section>
     </main>
-    <button class="add-floating" id="floatingAdd">＋ Add entry</button><div class="toast" id="toast"></div>
+    <button class="add-floating" id="floatingAdd" aria-label="Add entry">＋</button><div class="toast" id="toast"></div>
     <div class="modal-wrap" id="entryModal"><form class="modal" id="entryForm"><div class="modal-title"><h2 id="entryModalTitle">Add entry</h2><button type="button" class="icon-btn" data-close="entryModal">×</button></div><input type="hidden" id="entryId"><div class="type-toggle"><button type="button" class="active" data-entrytype="expense">Expense</button><button type="button" data-entrytype="income">Income</button></div><div class="form-grid"><div class="field full"><label>What was it?</label><input id="entryName" required maxlength="60" placeholder="e.g. Weekly groceries" /></div><div class="field"><label>Amount</label><input id="entryAmount" required type="number" min="0.01" step="0.01" placeholder="0.00" /></div><div class="field"><label>Currency</label><select id="entryCurrency"></select></div><div class="field" id="exchangeField"><label id="exchangeLabel">Exchange rate</label><input id="entryExchangeRate" type="number" min="0.0001" step="0.0001" placeholder="1.0000" /></div><div class="field"><label>Date</label><input id="entryDate" required type="date" /></div><div class="field" id="groupField"><label>Budget group</label><select id="entryGroup"></select></div><div class="field"><label>Category</label><select id="entryCategory"></select><button type="button" class="inline-add" id="entryNewCategory">+ Create a category</button></div><div class="field full"><label><input id="entryRecurring" type="checkbox" /> Repeat every month</label></div></div><div class="form-actions"><button class="secondary" type="button" data-close="entryModal">Cancel</button><button class="primary" type="submit">Save entry</button></div></form></div>
     <div class="modal-wrap" id="categoryModal"><form class="modal" id="categoryForm"><div class="modal-title"><h2>New category</h2><button type="button" class="icon-btn" data-close="categoryModal">×</button></div><div class="field"><label>Name</label><input id="newCategoryName" required maxlength="32" placeholder="e.g. Education" /></div><div class="field"><label>Budget group</label><select id="newCategoryGroup"><option value="needs">Needs</option><option value="wants">Wants</option></select></div><div class="form-actions"><button class="secondary" type="button" data-close="categoryModal">Cancel</button><button class="primary">Create category</button></div></form></div>
     <div class="modal-wrap" id="monthPickerModal"><div class="modal"><div class="modal-title"><div><h2>Choose month</h2><p class="subtle">Jump directly to any month.</p></div><button type="button" class="icon-btn" data-close="monthPickerModal">×</button></div><div class="picker-year"><button id="pickerPrevYear">‹</button><strong id="pickerYear"></strong><button id="pickerNextYear">›</button></div><div class="month-grid" id="monthGrid"></div></div></div>
@@ -193,6 +199,54 @@
       render();
       if (['home','month','year'].includes(urlOptions.get('view'))) showView(urlOptions.get('view'));
       if (urlOptions.get('settings') === 'themes') document.querySelector('#accountButton').click();
+    </script>
+    <script>
+      // Backups make the one-time move from localhost to GitHub Pages safe.
+      (() => {
+        const storageKey = 'moneyspace-browser-v1';
+        const modal = document.querySelector('#accountModal .modal');
+        if (!modal || document.querySelector('#backupAccountSection')) return;
+        const section = document.createElement('section');
+        section.id = 'backupAccountSection';
+        section.className = 'account-section';
+        section.innerHTML = `<h3>Your data</h3><p class="subtle">Keep a backup before moving Moneyspace to another address or device.</p><div class="backup-actions"><button class="secondary" type="button" id="exportBackup">Export backup</button><label class="secondary">Import backup<input id="importBackup" type="file" accept="application/json,.json" hidden></label></div>`;
+        modal.append(section);
+
+        document.querySelector('#exportBackup').addEventListener('click', () => {
+          const backup = localStorage.getItem(storageKey);
+          if (!backup) return;
+          const file = new Blob([backup], { type: 'application/json' });
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(file);
+          link.download = `moneyspace-backup-${new Date().toISOString().slice(0, 10)}.json`;
+          link.click();
+          setTimeout(() => URL.revokeObjectURL(link.href), 500);
+        });
+
+        document.querySelector('#importBackup').addEventListener('change', (event) => {
+          const file = event.target.files?.[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            try {
+              const backup = JSON.parse(String(reader.result));
+              if (!backup || !Array.isArray(backup.entries) || !Array.isArray(backup.recurring) || typeof backup.categories !== 'object') throw new Error('Invalid backup');
+              if (!confirm('Replace the current Moneyspace data with this backup?')) return;
+              localStorage.setItem(storageKey, JSON.stringify(backup));
+              window.location.reload();
+            } catch {
+              alert('This is not a valid Moneyspace backup.');
+            }
+          };
+          reader.readAsText(file);
+        });
+      })();
+    </script>
+    <script>
+      // Keep all destructive actions textual, including dynamically rendered categories.
+      const labelCategoryDeletes = () => document.querySelectorAll('[data-remove-category]').forEach((button) => { button.textContent = 'Delete'; });
+      labelCategoryDeletes();
+      new MutationObserver(labelCategoryDeletes).observe(document.querySelector('#categoriesList'), { childList: true, subtree: true });
     </script>
     <script>
       if ('serviceWorker' in navigator) {

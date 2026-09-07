@@ -1,5 +1,5 @@
-const CACHE = 'moneyspace-shell-v1';
-const APP_SHELL = ['./', './index.html', './manifest.webmanifest', './icon.png'];
+const CACHE = 'moneyspace-shell-v5';
+const APP_SHELL = ['./', './index.html', './manifest.webmanifest', './moneyspace-icon.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(APP_SHELL)));
