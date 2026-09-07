@@ -1,4 +1,4 @@
-const CACHE = 'moneyspace-shell-v5';
+const CACHE = 'moneyspace-shell-v6';
 const APP_SHELL = ['./', './index.html', './manifest.webmanifest', './moneyspace-icon.png'];
 
 self.addEventListener('install', (event) => {

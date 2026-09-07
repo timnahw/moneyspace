@@ -121,8 +121,8 @@
       .brand{font-family:"Avenir Next",Avenir,"Helvetica Neue",ui-sans-serif,system-ui,sans-serif;font-weight:650;letter-spacing:-.045em}[data-palette] .mark{width:39px;height:39px;background:var(--purple-deep);border:0;border-radius:13px;box-shadow:none}[data-palette] .mark:before{content:"";position:absolute;left:7px;top:7px;width:18px;height:14px;border:0;border-radius:5px;background:var(--orange);transform:none;box-shadow:none}[data-palette] .mark:after{content:"";position:absolute;left:20px;top:20px;width:12px;height:12px;border:0;border-radius:4px;background:var(--blue);transform:none;box-shadow:none}
       /* A simple primary action and a navigation edge that finishes at the screen. */
       .add-floating{align-items:center;border-radius:50%;display:flex;font-size:28px;height:54px;justify-content:center;line-height:1;padding:0;right:max(20px,calc(50% - 220px));bottom:76px;width:54px}
-      .nav{bottom:0;border-bottom:0;border-radius:20px 20px 0 0;width:min(100%,480px)}
-      @media(max-width:520px){.nav{bottom:0;border-radius:20px 20px 0 0;width:100%}.add-floating{bottom:76px;right:18px}}
+      .nav{bottom:0;border-bottom:0;border-radius:20px 20px 0 0;margin-bottom:0;width:min(100%,480px)}
+      @media(max-width:520px){.nav{bottom:0;border-radius:20px 20px 0 0;margin-bottom:0;width:100%}.add-floating{bottom:76px;right:18px}}
       .backup-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.backup-actions label{display:inline-flex;align-items:center;cursor:pointer}
       button.mini-actions{background:transparent;font-size:11px;font-weight:750;padding:5px 3px}
     </style>
@@ -244,7 +244,7 @@
     </script>
     <script>
       // Keep all destructive actions textual, including dynamically rendered categories.
-      const labelCategoryDeletes = () => document.querySelectorAll('[data-remove-category]').forEach((button) => { button.textContent = 'Delete'; });
+      const labelCategoryDeletes = () => document.querySelectorAll('[data-remove-category]').forEach((button) => { if (button.textContent !== 'Delete') button.textContent = 'Delete'; });
       labelCategoryDeletes();
       new MutationObserver(labelCategoryDeletes).observe(document.querySelector('#categoriesList'), { childList: true, subtree: true });
     </script>
