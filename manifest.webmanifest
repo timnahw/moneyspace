@@ -1,0 +1,18 @@
+{
+  "name": "Moneyspace",
+  "short_name": "Moneyspace",
+  "description": "A calm personal space for your money.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FFF8F7",
+  "theme_color": "#FFF8F7",
+  "icons": [
+    {
+      "src": "./icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
